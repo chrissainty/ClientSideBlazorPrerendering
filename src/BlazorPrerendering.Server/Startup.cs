@@ -1,5 +1,8 @@
+using System;
 using System.Linq;
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +22,15 @@ namespace BlazorPrerendering.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddScoped<HttpClient>(s =>
+            {
+                var uriHelper = s.GetRequiredService<IUriHelper>();
+                return new HttpClient
+                {
+                    BaseAddress = new Uri(uriHelper.GetBaseUri())
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,7 +44,7 @@ namespace BlazorPrerendering.Server
                 app.UseBlazorDebugging();
             }
 
-            app.UseHttpsRedirection();
+            app.UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseStaticFiles();
 
@@ -43,8 +55,6 @@ namespace BlazorPrerendering.Server
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            app.UseBlazor<Client.Startup>();
         }
     }
 }
