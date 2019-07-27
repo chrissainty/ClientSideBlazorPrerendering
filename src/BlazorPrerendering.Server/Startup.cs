@@ -44,7 +44,7 @@ namespace BlazorPrerendering.Server
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            app.UseBlazor<Client.Startup>();
+            app.UseClientSideBlazorFiles<Client.Startup>();
         }
     }
 }
