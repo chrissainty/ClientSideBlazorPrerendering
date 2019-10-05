@@ -25,10 +25,10 @@ namespace BlazorPrerendering.Server
 
             services.AddScoped<HttpClient>(s =>
             {
-                var uriHelper = s.GetRequiredService<IUriHelper>();
+                var navigationManager = s.GetRequiredService<NavigationManager>();
                 return new HttpClient
                 {
-                    BaseAddress = new Uri(uriHelper.GetBaseUri())
+                    BaseAddress = new Uri(navigationManager.BaseUri)
                 };
             });
         }
