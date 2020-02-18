@@ -44,7 +44,7 @@ namespace BlazorPrerendering.Server
                 app.UseBlazorDebugging();
             }
 
-            app.UseClientSideBlazorFiles<Client.Startup>();
+            app.UseClientSideBlazorFiles<Client.Program>();
 
             app.UseStaticFiles();
 
